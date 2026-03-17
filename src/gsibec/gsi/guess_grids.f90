@@ -1136,6 +1136,12 @@ end subroutine final_
     call die(myname_,'pointer to '//trim(vname)//" not found",ier)
   endif
   ptr=var
+  
+  if ( trim(vname) == 'ps' ) then 
+           !cltothink
+       call gsi_bundlegetpointer(gsi_metguess_bundle(jj),'ps' ,ges_ps,ier)
+  endif
+          ptr=kPa_per_Pa*ptr ! RT_TBD: is this the best place for this?
   if ( trim(vname) == 'ps' ) ptr=kPa_per_Pa*ptr ! RT_TBD: is this the best place for this?
   if ( trim(vname) == 'z'  ) ptr=ptr/grav       ! RT_TBD: is this the best place for this?
   end subroutine guess_basics2_
