@@ -554,7 +554,8 @@
   logical:: already_init_mpi
   real(r_kind):: varqc_max,c_varqc_new
   character(len=255) :: thisrc
-  integer :: iu
+  integer :: iu, ios_open
+  character(len=256) :: dbgfile
 
   ierror=0
   if (present(nmlfile)) then
@@ -562,11 +563,17 @@
   else
      thisrc = gsimain_rc
   endif
-  write(error_unit,*)'thinkdebgsimod thisrc ',trim(thisrc)
-  flush(error_unit)  
-open(newunit=iu, file='debug_rank.txt', status='unknown', position='append', action='write')
-write(iu,'(a)') 'thinkdebgsimod thisrc = ' // trim(thisrc)
-flush(iu)
+  write(error_unit,*) 'thinkdebgsimod rank=', mype, ' thisrc=', trim(thisrc)
+  call flush(error_unit)
+  write(dbgfile,'("debug_rank_",I0,".txt")') mype
+  open(newunit=iu, file=trim(dbgfile), status='replace', action='write', iostat=ios_open)
+  write(error_unit,*) 'thinkdebgsimod rank=', mype, ' open_ios=', ios_open, ' file=', trim(dbgfile)
+  call flush(error_unit)
+  if (ios_open == 0) then
+     write(iu,'(a)') 'thinkdebgsimod thisrc = ' // trim(thisrc)
+     call flush(iu)
+     close(iu)
+  endif
 
   nfldsig_ = 1
   if (present(nfldsig)) then
