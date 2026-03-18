@@ -388,7 +388,6 @@
 !     use_sp_eqspace    - if .true., then ensemble grid is equal spaced, staggered 1/2 grid unit off
 !                         poles.  if .false., then gaussian grid assumed for ensemble (global only)
 
-
   namelist/gridopts/jcap,jcap_b,nlat,nlon,nsig,use_sp_eqspace,fv3_regional,grid_ratio_fv3_regional,&
                     regional,mpas_regional,use_fv3_grid_spec,rlat_start,rlat_end,rlon_start,rlon_end,&
                     north_pole_lat,north_pole_lon
@@ -543,6 +542,8 @@
 !
   use gsi_fixture_GEOS, only: config_GEOS => fixture_config
   use gsi_fixture_GFS,  only: config_GFS  => fixture_config
+  use, intrinsic :: iso_fortran_env, only : error_unit
+
   implicit none
   integer,optional,intent(in):: nfldsig
   character(len=*),optional,intent(in):: nmlfile
@@ -553,6 +554,7 @@
   logical:: already_init_mpi
   real(r_kind):: varqc_max,c_varqc_new
   character(len=255) :: thisrc
+  integer :: iu
 
   ierror=0
   if (present(nmlfile)) then
@@ -560,6 +562,12 @@
   else
      thisrc = gsimain_rc
   endif
+  write(error_unit,*)'thinkdebgsimod thisrc ',trim(thisrc)
+  flush(error_unit)  
+open(newunit=iu, file='debug_rank.txt', status='unknown', position='append', action='write')
+write(iu,'(a)') 'thinkdebgsimod thisrc = ' // trim(thisrc)
+flush(iu)
+
   nfldsig_ = 1
   if (present(nfldsig)) then
     nfldsig_ = nfldsig
