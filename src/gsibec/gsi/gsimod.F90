@@ -565,6 +565,7 @@
   endif
   write(error_unit,*) 'thinkdebgsimod rank=', mype, ' thisrc=', trim(thisrc)
   call flush(error_unit)
+  call die(myname_,'thinkdeb stop before gsi_metguess_init',999)
   write(dbgfile,'("debug_rank_",I0,".txt")') mype
   open(newunit=iu, file=trim(dbgfile), status='replace', action='write', iostat=ios_open)
   write(error_unit,*) 'thinkdebgsimod rank=', mype, ' open_ios=', ios_open, ' file=', trim(dbgfile)
