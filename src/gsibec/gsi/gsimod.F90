@@ -563,18 +563,8 @@
   else
      thisrc = gsimain_rc
   endif
-  write(error_unit,*) 'thinkdebgsimod rank=', mype, ' thisrc=', trim(thisrc)
+  write(error_unit,*) 'thinkdebgsimod rank=', mype, ' namelist file is ',  trim(thisrc)
   call flush(error_unit)
-  call die(myname_,'thinkdeb stop before gsi_metguess_init',999)
-  write(dbgfile,'("debug_rank_",I0,".txt")') mype
-  open(newunit=iu, file=trim(dbgfile), status='replace', action='write', iostat=ios_open)
-  write(error_unit,*) 'thinkdebgsimod rank=', mype, ' open_ios=', ios_open, ' file=', trim(dbgfile)
-  call flush(error_unit)
-  if (ios_open == 0) then
-     write(iu,'(a)') 'thinkdebgsimod thisrc = ' // trim(thisrc)
-     call flush(iu)
-     close(iu)
-  endif
 
   nfldsig_ = 1
   if (present(nfldsig)) then
