@@ -747,6 +747,7 @@
   endif
 
 ! read in basic grid parameters
+  use_fv3_grid_spec=.true.  !clt temporay 
   open(11,file=thisrc)
   read(11,gridopts,iostat=ios)
   if(ios/=0) call die(myname_,'read(gridopts)',ios)  
