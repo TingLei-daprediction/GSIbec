@@ -620,6 +620,9 @@ end subroutine final_
     if (fv3_regional ) then
        do j=1,lon2
           do i=1,lat2
+            if(ges_ps(i,j).lt.0.001) then
+             write(6,*)"thinkdebin guess_grid.f90 ,ges_ps <0"
+            endif
              pinc(i,j)=(ges_ps(i,j)-ges_prsi(i,j,1,jj))
           enddo
        enddo
